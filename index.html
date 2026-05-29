@@ -1,0 +1,168 @@
+```html id="h5u4ng"
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>🍓 Strawberry Chat</title>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+  <style>
+
+body {
+  margin: 0;
+  font-family: cursive;
+  background: url("https://images.unsplash.com/photo-1528825871115-3581a5387919") no-repeat center/cover;
+  height: 100vh;
+}
+
+.app {
+  max-width: 420px;
+  margin: auto;
+  margin-top: 20px;
+  background: rgba(255, 192, 203, 0.85);
+  border-radius: 20px;
+  padding: 15px;
+}
+
+.topbar {
+  text-align: center;
+  color: white;
+}
+
+.buttons {
+  text-align: center;
+}
+
+.buttons button {
+  margin: 5px;
+  padding: 10px;
+  border-radius: 15px;
+  border: none;
+  background: hotpink;
+  color: white;
+}
+
+#chatBox {
+  height: 300px;
+  overflow-y: auto;
+  background: white;
+  border-radius: 15px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.message {
+  background: pink;
+  padding: 8px;
+  margin: 5px;
+  border-radius: 15px;
+}
+
+.inputArea {
+  display: flex;
+  margin-top: 10px;
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+}
+
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <div class="topbar">
+    <h1>🍓🍓🍓</h1>
+  </div>
+
+  <div class="buttons">
+    <button onclick="joinGroup()">Join Group Chat</button>
+    <button onclick="startPrivate()">Private Chat</button>
+    <button onclick="startCall()">Audio Call 📞</button>
+  </div>
+
+  <div id="chatBox"></div>
+
+  <div class="inputArea">
+    <input id="msgInput" placeholder="Type a message..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+</div>
+
+<script>
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDBpaeOUiaDNjwR5agMOpa5q8ODD0qqB1k",
+  authDomain: "project-mc-strawberry.firebaseapp.com",
+  projectId: "project-mc-strawberry",
+  storageBucket: "project-mc-strawberry.firebasestorage.app",
+  messagingSenderId: "806291478924",
+  appId: "1:806291478924:web:9e891319f838f524fadea9"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.firestore();
+
+const chat = document.getElementById("chatBox");
+
+function sendMessage() {
+
+  const input = document.getElementById("msgInput");
+
+  if (input.value.trim() === "") return;
+
+  db.collection("messages").add({
+    text: input.value,
+    created: Date.now()
+  });
+
+  input.value = "";
+}
+
+db.collection("messages")
+.orderBy("created")
+.onSnapshot(snapshot => {
+
+  chat.innerHTML = "";
+
+  snapshot.forEach(doc => {
+
+    const msg = document.createElement("div");
+
+    msg.className = "message";
+
+    msg.innerText = doc.data().text;
+
+    chat.appendChild(msg);
+
+  });
+
+});
+
+function joinGroup() {
+  alert("🍓 Joined Group Chat");
+}
+
+function startPrivate() {
+  alert("💌 Private chat coming soon");
+}
+
+function startCall() {
+  alert("📞 Calls need WebRTC later");
+}
+
+</script>
+
+</body>
+</html>
+```
